@@ -11,6 +11,7 @@ const init = () => {
       <App
         time={settings.gameTime}
         mistakes={settings.errorCount}
+        onClick={onclick}
       />,
       document.querySelector(`#root`)
   );
