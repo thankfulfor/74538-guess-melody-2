@@ -9,6 +9,7 @@ it(`App корректно рендерится после перезапуск�
       mistakes={0}
       time={0}
       onClick={clickHandler}
+      questions={[]}
     />)
 .toJSON();
   expect(tree).toMatchSnapshot();
