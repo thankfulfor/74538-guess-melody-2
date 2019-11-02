@@ -1,14 +1,16 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import {AudioPlayer} from '../audio-player/audio-player.jsx';
 
 export class GuessGenre extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isChecked: false,
+      checkedCheckboxes: [],
+      activePlayer: -1,
+      isChecked: false
     };
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
-    this.onCheckboxChangeHandler = this.onCheckboxChangeHandler.bind(this);
   }
 
   formSubmitHandler(evt) {
@@ -24,12 +26,6 @@ export class GuessGenre extends React.PureComponent {
       return checkedCheckbox.value;
     });
     onAnswer(answers);
-  }
-
-  onCheckboxChangeHandler() {
-    this.setState({
-      isChecked: !this.state.isChecked,
-    });
   }
 
   render() {
@@ -72,11 +68,14 @@ export class GuessGenre extends React.PureComponent {
           <form className="game__tracks" onSubmit={this.formSubmitHandler}>
             {answers.map((it, i) => {
               return (
-                <div key={`${screenIndex}-answer-${i}`} className="track">
-                  <button className="track__button track__button--play" type="button" />
-                  <div className="track__status">
-                    <audio />
-                  </div>
+                <div key={`${screenIndex}-answer-${it.id}`} className="track">
+                  <AudioPlayer
+                    src={it.src}
+                    isPlaying={i === this.state.activePlayer}
+                    onPlayButtonClick={() => this.setState({
+                      activePlayer: this.state.activePlayer === i ? -1 : i
+                    })}
+                  />
                   <div className="game__answer">
                     <input
                       className="game__input visually-hidden"
@@ -84,9 +83,8 @@ export class GuessGenre extends React.PureComponent {
                       name="answer"
                       checked={this.state.isChecked}
                       value={`answer-${i}`}
-                      onChange={this.onCheckboxChangeHandler}
-                      id={`answer-${i}`} />
-                    <label className="game__check" htmlFor={`answer-${i}`}>Отметить</label>
+                      id={i} />
+                    <label className="game__check" htmlFor={i}>Отметить</label>
                   </div>
                 </div>
               );
