@@ -8,7 +8,6 @@ export class GuessGenre extends React.PureComponent {
     this.state = {
       checkedCheckboxes: [],
       activePlayer: -1,
-      isChecked: false
     };
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
   }
@@ -81,7 +80,6 @@ export class GuessGenre extends React.PureComponent {
                       className="game__input visually-hidden"
                       type="checkbox"
                       name="answer"
-                      checked={this.state.isChecked}
                       value={`answer-${i}`}
                       id={i} />
                     <label className="game__check" htmlFor={i}>Отметить</label>

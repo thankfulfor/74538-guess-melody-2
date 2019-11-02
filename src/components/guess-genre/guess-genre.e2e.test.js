@@ -1,7 +1,12 @@
 import React from 'react';
-import Enzyme, {mount} from 'enzyme';
+import ReactDOM from 'react-dom';
+import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import {GuessGenre} from './guess-genre';
+
+/**
+ * @jest-environment jsdom
+ */
 
 Enzyme.configure({adapter: new Adapter()});
 
@@ -21,19 +26,20 @@ const question = {
 };
 
 it(`Компонент GuessGenre корректно обрабатывает onAnswer`, () => {
-  const changeHandler = jest.fn();
-
-  const guessGenre = mount(
+  const formSubmitHandler = jest.fn();
+  const container = document.createElement(`div`);
+  ReactDOM.render(
       <GuessGenre
         screenIndex={0}
         question={question}
-        onAnswer={changeHandler}
-      />
+        onAnswer={formSubmitHandler}
+      />, container
   );
 
-  const form = guessGenre.find(`form`);
-  const input = guessGenre.find({type: `checkbox`});
-  input.simulate(`change`, {target: {value: `answer-0`}});
-  form.simulate(`submit`, {preventDefault() {}});
-  expect(changeHandler).toHaveBeenCalledWith([`answer-0`]);
+  const form = container.querySelector(`form`);
+  const {answer} = form.elements;
+  answer.value = `answer-0`;
+  answer.dispatchEvent(new window.Event(`click`));
+  form.dispatchEvent(new window.Event(`submit`));
+  expect(formSubmitHandler).toHaveBeenCalledWith([`answer-0`]);
 });
