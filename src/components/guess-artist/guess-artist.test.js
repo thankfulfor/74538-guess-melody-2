@@ -23,7 +23,7 @@ it(`GuessArtist корректно рендерится после переза�
       screenIndex={0}
       question={question}
       onAnswer={clickHandler}
-    />)
+    />, {createNodeMock: (el) => el})
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

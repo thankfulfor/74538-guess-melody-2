@@ -25,7 +25,7 @@ it(`GuessGenre корректно рендерится после перезап
       screenIndex={0}
       question={question}
       onAnswer={clickHandler}
-    />)
+    />, {createNodeMock: (el) => el})
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

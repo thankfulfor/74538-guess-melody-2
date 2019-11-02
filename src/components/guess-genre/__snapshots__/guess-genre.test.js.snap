@@ -107,17 +107,15 @@ exports[`GuessGenre корректно рендерится после пере�
           className="game__answer"
         >
           <input
-            checked={false}
             className="game__input visually-hidden"
-            id="answer-0"
+            id={0}
             name="answer"
-            onChange={[Function]}
             type="checkbox"
             value="answer-0"
           />
           <label
             className="game__check"
-            htmlFor="answer-0"
+            htmlFor={0}
           >
             Отметить
           </label>

@@ -1,10 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import {AudioPlayer} from '../audio-player/audio-player.jsx';
 
 export class GuessArtist extends React.PureComponent {
   constructor(props) {
     super(props);
     this.radioChangeHandler = this.radioChangeHandler.bind(this);
+    this.state = {
+      isPlaying: false,
+    };
   }
 
   radioChangeHandler(evt) {
@@ -19,6 +23,7 @@ export class GuessArtist extends React.PureComponent {
     };
 
     const {screenIndex, question} = this.props;
+    const {isPlaying} = this.state;
 
     return (
       <section className="game game--artist">
@@ -49,10 +54,11 @@ export class GuessArtist extends React.PureComponent {
           <h2 className="game__title">Кто исполняет эту песню?</h2>
           <div className="game__track">
             <div className="track">
-              <button className="track__button track__button--play" type="button" />
-              <div className="track__status">
-                <audio />
-              </div>
+              <AudioPlayer
+                isPlaying={isPlaying}
+                onPlayButtonClick={() => this.setState({isPlaying: !isPlaying})}
+                src={question.song.src}
+              />
             </div>
           </div>
 
@@ -83,6 +89,16 @@ export class GuessArtist extends React.PureComponent {
 
 GuessArtist.propTypes = {
   screenIndex: PropTypes.number.isRequired,
-  question: PropTypes.object.isRequired,
-  onAnswer: PropTypes.func.isRequired
+  onAnswer: PropTypes.func.isRequired,
+  question: PropTypes.shape({
+    answers: PropTypes.arrayOf(PropTypes.shape({
+      artist: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
+    })).isRequired,
+    song: PropTypes.shape({
+      artist: PropTypes.string.isRequired,
+      src: PropTypes.string.isRequired,
+    }).isRequired,
+    type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
+  }).isRequired,
 };

@@ -91,6 +91,8 @@ exports[`GuessArtist корректно рендерится после пере
       >
         <button
           className="track__button track__button--play"
+          disabled={true}
+          onClick={[Function]}
           type="button"
         />
         <div
